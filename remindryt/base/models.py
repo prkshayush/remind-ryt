@@ -27,7 +27,3 @@ class Message(models.Model):
     def __str__(self):
         return self.body[:90]
     
-class AudioRecord(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    audio_name = models.CharField(max_length=255)
-    audio_data = models.BinaryField()

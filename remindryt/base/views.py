@@ -102,17 +102,3 @@ def joinGroup(request, key):
     group.participants.add(request.user)
     
     return redirect('group', key=group.id)
-
-# speech recorgnizer
-@login_required(login_url='/login')
-@csrf_exempt
-def process_audio(request):
-    if request.method == 'POST':
-        audio_file = request.FILES['audio_data']
-        recognizer = sr.Recognizer()
-
-        with sr.AudioFile(audio_file) as source:
-            audio_data = recognizer.record(source)
-            text = recognizer.recognize_google(audio_data)
-
-        return JsonResponse({'text': text})

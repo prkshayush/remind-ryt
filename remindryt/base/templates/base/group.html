@@ -28,30 +28,6 @@
             {% endif %}
         </div>
 
-        <!-- ai stuff -->
-        <div class="vertex">
-            <h3>Peronalised AI</h3>
-            <form method="POST">
-                {% csrf_token %}
-                <button class="mic-toggle" id="mic">
-                    <span class="material-symbols-outlined">
-                        mic
-                    </span>
-                </button>
-            </form>
-
-            <audio class="playback" controls></audio>
-
-            <!-- <form action="" method="POST">
-                {% csrf_token %}
-                <label for="audio_name">Recording Name:</label>
-                <input type="text" name="audio_name" id="audio_name">
-                <button id="record-btn">Record</button>
-                <button id="stop-btn" disabled>Stop</button>
-            </form>
-            <p id="message"></p> -->
-        </div>
-
         <div>
             <h3>Host: {{group.host.username}}</h3>
             <p>Participants: 
