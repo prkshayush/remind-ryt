@@ -1,0 +1,63 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<main class="home-container">
+    <div class="intro-text">
+        <h3>An app,<em>&nbsp; for the procratinators.</h3>
+        <small>By another one...</em></small>
+        <br>
+        <p>Achieve together. </p>
+        <p>Get motivated with <b>Remind Ryt.</b></p><br>
+        <small><em>Be accountable. Send your team-mates customised reminders using Gen-AI.</em></small>
+    </div>
+
+    <div class="home-group">
+        <!-- part-1 -->
+        <div class="home-description">
+            <p>Ditch the solo struggle! <br>
+                Remind Ryt lets you join or create groups to tackle goals together. Set up
+                projects, track progress daily with quick messages, and see everyone's journey unfold. Based on your
+                updates, Google's AI tailors motivational messages - a virtual high five, a nudge back on track, or
+                even a tip from a Achieve more, together. <br>
+                Explore <span class="special"><em>Remind Ryt</em></span> and experience the power of teamwork.
+            </p>
+        </div>
+
+        <!-- part-2 -->
+        {% if request.user.is_authenticated %}
+        <div class="group-info">
+            <div class="group-title">
+                <h3>Woah, {{request.user}} are a part of {{group_count}} groups!!</h3>
+            <br><a href="{% url 'createGroup' %}">Create Group</a>
+
+            </div>
+            <!-- add functionality to add groups -->
+            <!-- loop through groups -->
+            {% for group in groups %}
+            <div>
+                
+                {% if request.user == group.host %}
+                <a href="/">Edit</a>
+                <a href="/">Delete</a>
+                {% else %}
+                <form action="{% url 'join_group' group.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Join" />
+                </form>
+                {% endif %}
+                <h3>
+                    {{group.id}} :
+                    <a href="{% url 'group' group.id %}">{{group.name}}</a>
+                </h3>
+                <span>@{{group.host.username}}</span> 
+            </div>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+    </div>
+
+</main>
+
+{% endblock content %}

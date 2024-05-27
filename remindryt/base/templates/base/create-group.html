@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="create-group container">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <label for="createGroup">Create Group</label><br>
+        <input type="submit" id="createGroup" value="Submit" />
+    </form>
+</div>
+
+{% endblock %}
