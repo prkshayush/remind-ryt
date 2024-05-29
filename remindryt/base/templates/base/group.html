@@ -14,34 +14,58 @@
         <!-- general group info -->
         <div class="group-message">
             <h3>Recent Messages</h3>
-            {% if group_messages %}
-            {% for message in group_messages %}
+
             <div>
-                <p>{{message}}</p>
-                <small>
-                    by @{{message.user}}, {{message.created|timesince}} ago
-                </small>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <br>
+                    <label for="task">Task: </label>
+                    <input type="text" id="task" name="task">
+                    <br>
+                    <label for="progress">Progress:</label>
+                    <select id="progress" name="progress">
+                        <option value="25">25%</option>
+                        <option value="50">50%</option>
+                        <option value="75">75%</option>
+                        <option value="100">100%</option>
+                    </select>
+                    <br>
+                    <label for="prg_msg">Message:</label>
+                    <input type="text" id="prg_msg" name="prg_msg">
+                    <br>
+                    <input type="submit" value="Submit">
+                </form>
             </div>
-            {% endfor %}
+            {% if group_messages %}
+                {% for message in group_messages %}
+                <div>
+                    <p>Task: {{message.task}}</p>
+                    <p>Progress: &lt;{{message.progress}}%, Message: {{message.prg_msg}}</p>
+                    <small>
+                        by @{{message.user}}, {{message.created|timesince}} ago
+                    </small>
+                    </div>
+                {% endfor %}
             {% else %}
-            <p>Oh, no messages yet!</p>
+                <p>Please enter an input</p>
             {% endif %}
         </div>
 
         <div>
             <h3>Host: {{group.host.username}}</h3>
-            <p>Participants: 
-                <ul>
-                    {% for participant in group.participants.all %}
-                    <h3>
-                        {{participant.username}}
-                    </h3>
-                    {% endfor %}
-                </ul>
+            <p>Participants:
+            <ul>
+                {% for participant in group.participants.all %}
+                <h3>
+                    {{participant.username}}
+                </h3>
+                {% endfor %}
+            </ul>
             </p>
         </div>
     </div>
-
 </main>
+
+
 
 {% endblock content %}

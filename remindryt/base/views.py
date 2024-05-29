@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import JsonResponse
-import speech_recognition as sr
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import UserCreationForm
@@ -71,10 +69,28 @@ def home(request):
 
 def group(request, key):
     group = Group.objects.get(id=key)
-    group_messages = group.message_set.all()
     participants = group.participants.all()
+    if request.user != group.host and request.user not in participants.all():
+        return redirect('home')
     
-    context = {'group': group, 'group_messages': group_messages, 'participants': participants}
+    
+    elif request.method == 'POST':
+        task = request.POST.get('task')
+        progress = request.POST.get('progress')
+        prg_msg = request.POST.get('prg_msg')
+        Message.objects.create(user=request.user, group=group, task=task, progress=progress, prg_msg=prg_msg)
+        return redirect('group', key=key)
+    
+    else:
+        last_message = group.message_set.last()
+        if last_message is not None:
+            group_messages = Message.objects.filter(id=last_message.id)
+        else:
+            group_messages = Message.objects.none()
+
+    group_messages = group.message_set.all()
+
+    context = {'group': group, 'group_messages': group_messages, 'participants': participants,}
 
     return render(request, 'base/group.html', context)
 

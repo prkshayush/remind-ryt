@@ -25,22 +25,23 @@
         </div>
 
         <!-- part-2 -->
+
         {% if request.user.is_authenticated %}
         <div class="group-info">
             <div class="group-title">
                 <h3>Woah, {{request.user}} are a part of {{group_count}} groups!!</h3>
-            <br><a href="{% url 'createGroup' %}">Create Group</a>
+                <br><a href="{% url 'createGroup' %}">Create Group</a>
 
             </div>
             <!-- add functionality to add groups -->
             <!-- loop through groups -->
             {% for group in groups %}
             <div>
-                
+
                 {% if request.user == group.host %}
                 <a href="/">Edit</a>
                 <a href="/">Delete</a>
-                {% else %}
+                {% elif request.user not in group.participants.all %}
                 <form action="{% url 'join_group' group.id %}" method="POST">
                     {% csrf_token %}
                     <input type="submit" value="Join" />
@@ -49,7 +50,7 @@
                 <h3>
                     <a href="{% url 'group' group.id %}">{{group.name}}</a>
                 </h3>
-                <span>@{{group.host.username}}</span> 
+                <span>@{{group.host.username}}</span>
             </div>
             {% endfor %}
         </div>

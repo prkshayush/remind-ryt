@@ -17,7 +17,9 @@ class Group(models.Model):
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
-    body = models.TextField()
+    task = models.CharField(max_length=25, default='none')
+    progress = models.IntegerField(default=0)
+    prg_msg = models.CharField(max_length=20, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -25,5 +27,5 @@ class Message(models.Model):
         ordering = ['-updated', '-created']
 
     def __str__(self):
-        return self.body[:90]
+        return str(self.progress)
     
